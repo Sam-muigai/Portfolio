@@ -33,10 +33,12 @@ fun HomeScreenContent(modifier: Modifier = Modifier) {
         ) {
             Button(
                 shape = MaterialTheme.shapes.extraSmall,
-                onClick = {}
+                onClick = {
+
+                }
             ) {
                 Text(
-                    "HELLO WORLD",
+                    "Hello World",
                     fontWeight = FontWeight.Bold
                 )
             }

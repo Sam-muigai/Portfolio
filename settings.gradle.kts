@@ -24,3 +24,4 @@ dependencyResolutionManagement {
 rootProject.name = "Portfolio"
 include(":app")
 include(":core:theme")
+include(":features:home")

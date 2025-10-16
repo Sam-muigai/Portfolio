@@ -11,7 +11,7 @@ class FeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply("com.samkt.library")
+                apply("com.samkt.compose")
             }
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)

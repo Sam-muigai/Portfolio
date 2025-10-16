@@ -6,7 +6,7 @@ plugins {
 
 group = "com.samkt.convention"
 
-java{
+java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
@@ -29,14 +29,19 @@ gradlePlugin {
             implementationClass = "com.samkt.convention.ApplicationConventionPlugin"
         }
 
-        register("androidLibrary"){
+        register("androidLibrary") {
             id = "com.samkt.library"
             implementationClass = "com.samkt.convention.LibraryConventionPlugin"
         }
 
-        register("androidCompose"){
+        register("androidCompose") {
             id = "com.samkt.compose"
             implementationClass = "com.samkt.convention.ComposeConventionPlugin"
+        }
+
+        register("androidFeature") {
+            id = "com.samkt.feature"
+            implementationClass = "com.samkt.convention.FeatureConventionPlugin"
         }
     }
 }

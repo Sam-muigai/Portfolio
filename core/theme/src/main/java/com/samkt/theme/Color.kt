@@ -1,4 +1,4 @@
-package com.samkt.portfolio.ui.theme
+package com.samkt.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,6 +1,7 @@
 package com.samkt.portfolio
 
 import android.app.Application
+import com.samkt.data.di.dataModule
 import com.samkt.home.di.homeScreenModule
 import com.samkt.network.di.networkModule
 import org.koin.android.ext.koin.androidContext
@@ -13,7 +14,8 @@ class PortfolioApplication : Application() {
 
         val modules = listOf(
             homeScreenModule,
-            networkModule
+            networkModule,
+            dataModule
         )
 
         startKoin {

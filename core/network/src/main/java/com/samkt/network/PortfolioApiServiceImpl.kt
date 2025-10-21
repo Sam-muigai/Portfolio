@@ -11,7 +11,7 @@ class PortfolioApiServiceImpl(
 ) : PortfolioApiService {
     override suspend fun getUserInformation(userId: Int): ApiResponse<UserResponse> {
         return safeApiCall {
-            client.get("$BASE_URL?userId=$userId")
+            client.get("$BASE_URL/user?userId=$userId")
         }
     }
 

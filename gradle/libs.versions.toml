@@ -14,6 +14,7 @@ compileSdk = "36"
 minSdk = "24"
 targetSdk = "36"
 googleFontCompose = "1.9.3"
+koin = "4.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -44,6 +45,11 @@ material = { group = "com.google.android.material", name = "material", version.r
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradle-plugin = {group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin"}
 
+
+# koin
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin"}
+koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin"}
+
 [bundles]
 compose = [
     "androidx-ui",
@@ -54,7 +60,10 @@ compose = [
     "google-fonts"
 ]
 
-
+koin = [
+    "koin-android",
+    "koin-compose"
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

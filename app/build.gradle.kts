@@ -47,6 +47,7 @@ dependencies {
 
     implementation(project(":core:theme"))
     implementation(project(":features:home"))
+    implementation(project(":core:network"))
 
     implementation(libs.koin.android)
 }

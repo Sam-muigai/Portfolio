@@ -17,7 +17,7 @@ val provider = GoogleFont.Provider(
 
 val fontFamily = FontFamily(
     Font(
-        googleFont = GoogleFont("Inter"),
+        googleFont = GoogleFont("Space Grotesk"),
         fontProvider = provider,
     )
 )

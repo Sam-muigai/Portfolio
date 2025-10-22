@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.samkt.home.HomeScreen
+import com.samkt.portfolio.navigation.MainAppNavGraph
 import com.samkt.theme.PortfolioTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,7 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PortfolioTheme {
-                HomeScreen()
+                MainAppNavGraph()
             }
         }
     }

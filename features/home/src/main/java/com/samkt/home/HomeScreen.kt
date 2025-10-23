@@ -1,5 +1,6 @@
 package com.samkt.home
 
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,25 +37,44 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.samkt.domain.models.UserInformation
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun HomeScreen(
-    homeScreenViewModel: HomeScreenViewModel = koinViewModel()
+    homeScreenViewModel: HomeScreenViewModel = koinViewModel(),
+    onSettingsClicked: () -> Unit
+) {
+    val homeScreenUiState =
+        homeScreenViewModel.homeScreenUiState.collectAsStateWithLifecycle().value
+    HomeScreenContent(
+        homeScreenUiState = homeScreenUiState,
+        onSettingsClicked = onSettingsClicked
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomeScreenContent(
+    modifier: Modifier = Modifier,
+    homeScreenUiState: HomeScreenUiState,
+    onSettingsClicked: () -> Unit = {}
 ) {
     Scaffold(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        "Portfolio",
+                        stringResource(R.string.portfolio),
                         style = MaterialTheme.typography.bodyLarge.copy(
                             fontWeight = FontWeight.Bold
                         )
@@ -62,7 +82,7 @@ fun HomeScreen(
                 },
                 actions = {
                     IconButton(
-                        onClick = { },
+                        onClick = onSettingsClicked,
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Settings,
@@ -75,7 +95,7 @@ fun HomeScreen(
     ) { paddingValues ->
         AnimatedContent(
             modifier = Modifier.padding(paddingValues),
-            targetState = homeScreenViewModel.homeScreenUiState.collectAsState().value,
+            targetState = homeScreenUiState,
         ) { homeScreenUiState ->
             when (homeScreenUiState) {
                 is HomeScreenUiState.Error -> {
@@ -96,7 +116,6 @@ fun HomeScreen(
             }
         }
     }
-
 }
 
 
@@ -107,7 +126,9 @@ fun HomeScreenLoadingScreen(modifier: Modifier = Modifier) {
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        CircularProgressIndicator()
+        CircularProgressIndicator(
+            strokeWidth = 1.5.dp
+        )
     }
 }
 
@@ -172,21 +193,21 @@ fun HomeScreenContent(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
-                "Quick Access",
+                stringResource(R.string.quick_access),
                 fontWeight = FontWeight.Bold
             )
         }
         QuickAccessCard(
-            icon = Icons.Default.MailOutline,
-            label = "Projects"
+            icon = R.drawable.ic_outline_work,
+            label = stringResource(R.string.projects)
         )
         QuickAccessCard(
-            icon = Icons.Default.Person,
-            label = "About Me"
+            icon = R.drawable.ic_outline_person,
+            label = stringResource(R.string.about_me)
         )
         QuickAccessCard(
-            icon = Icons.Default.Call,
-            label = "Contact"
+            icon = R.drawable.ic_outline_email,
+            label = stringResource(R.string.contact_me)
         )
     }
 }
@@ -195,10 +216,11 @@ fun HomeScreenContent(
 fun QuickAccessCard(
     modifier: Modifier = Modifier,
     label: String,
-    icon: ImageVector
+    @DrawableRes icon: Int
 ) {
     Surface(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
             .padding(bottom = 8.dp),
         color = MaterialTheme.colorScheme.surfaceContainer,
         shape = MaterialTheme.shapes.small
@@ -221,8 +243,8 @@ fun QuickAccessCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = icon,
-                        contentDescription = null
+                        painter = painterResource(icon),
+                        contentDescription = label
                     )
                 }
             }

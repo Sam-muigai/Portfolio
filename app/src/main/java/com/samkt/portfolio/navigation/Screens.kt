@@ -30,6 +30,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.samkt.home.HomeScreen
 import com.samkt.portfolio.R
+import com.samkt.projects.ProjectsScreen
 
 
 private sealed interface TopLevelRoute {
@@ -101,15 +102,14 @@ fun MainAppNavGraph(modifier: Modifier = Modifier) {
             onBack = { topLevelBackStack.removeLast() },
             entryProvider = entryProvider {
                 entry<Home> {
-                    HomeScreen()
+                    HomeScreen(
+                        onSettingsClicked = {
+
+                        }
+                    )
                 }
                 entry<Projects> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = androidx.compose.ui.Alignment.Center
-                    ) {
-                        Text("Projects content goes here")
-                    }
+                    ProjectsScreen()
                 }
                 entry<AboutMe> {
                     Box(

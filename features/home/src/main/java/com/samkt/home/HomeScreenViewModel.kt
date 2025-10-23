@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.samkt.domain.helpers.Result
 import com.samkt.domain.models.UserInformation
 import com.samkt.domain.repositories.UserRepository
+import com.samkt.domain.utils.Constants.USER_ID
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -23,7 +24,7 @@ class HomeScreenViewModel(
 
     private fun loadUserInformation() {
         viewModelScope.launch {
-            when (val result = userRepository.getUserInformation(1)) {
+            when (val result = userRepository.getUserInformation(USER_ID)) {
                 is Result.Error -> _homeScreenUiState.update { HomeScreenUiState.Error(result.message) }
                 is Result.Success -> _homeScreenUiState.update { HomeScreenUiState.Success(result.data) }
             }

@@ -109,7 +109,11 @@ fun MainAppNavGraph(modifier: Modifier = Modifier) {
                     )
                 }
                 entry<Projects> {
-                    ProjectsScreen()
+                    ProjectsScreen(
+                        onBackClick = {
+                            topLevelBackStack.removeLast()
+                        }
+                    )
                 }
                 entry<AboutMe> {
                     Box(

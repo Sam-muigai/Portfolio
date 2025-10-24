@@ -35,10 +35,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.samkt.domain.models.Project
 import com.samkt.domain.models.UserInformation
+import com.samkt.theme.PortfolioTheme
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -51,7 +53,10 @@ fun ProjectsScreen(
 
     ProjectScreenContent(
         projectsScreenUiState = projectsScreenUiState,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        onViewDetails = {
+
+        }
     )
 }
 
@@ -61,6 +66,7 @@ fun ProjectScreenContent(
     modifier: Modifier = Modifier,
     projectsScreenUiState: ProjectsScreenUiState,
     onBackClick: () -> Unit = {},
+    onViewDetails: (String) -> Unit = {}
 ) {
     Scaffold(
         modifier = modifier,
@@ -103,7 +109,10 @@ fun ProjectScreenContent(
                 }
 
                 is ProjectsScreenUiState.Success -> {
-                    ProjectScreenContent(projects = projectsScreenUiState.projects)
+                    ProjectScreenContent(
+                        projects = projectsScreenUiState.projects,
+                        onViewDetails = onViewDetails
+                    )
                 }
             }
         }
@@ -143,7 +152,8 @@ fun ProjectScreenErrorScreen(
 @Composable
 fun ProjectScreenContent(
     modifier: Modifier = Modifier,
-    projects: List<Project>
+    projects: List<Project>,
+    onViewDetails: (String) -> Unit = {}
 ) {
     LazyColumn(
         modifier = modifier
@@ -154,7 +164,10 @@ fun ProjectScreenContent(
     ) {
         items(projects) { project ->
             ProjectCard(
-                project = project
+                project = project,
+                onViewDetails = {
+                    onViewDetails.invoke(project.projectUrl)
+                }
             )
         }
     }
@@ -163,7 +176,8 @@ fun ProjectScreenContent(
 @Composable
 fun ProjectCard(
     modifier: Modifier = Modifier,
-    project: Project
+    project: Project,
+    onViewDetails: () -> Unit = {}
 ) {
     Surface(
         modifier = modifier
@@ -215,10 +229,51 @@ fun ProjectCard(
                     ),
                     textAlign = TextAlign.End,
                     modifier = Modifier
-                        .clickable { }
+                        .clickable(onClick = onViewDetails)
                         .padding(8.dp)
                 )
             }
         }
     }
 }
+
+@Preview
+@Composable
+private fun LoadingProjectScreenPreview() {
+    PortfolioTheme {
+        ProjectScreenContent(
+            projectsScreenUiState = ProjectsScreenUiState.Loading
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun ErrorProjectScreenPreview() {
+    PortfolioTheme {
+        ProjectScreenContent(
+            projectsScreenUiState = ProjectsScreenUiState.Error("Error occurred")
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun SuccessProjectScreenPreview() {
+    PortfolioTheme {
+        ProjectScreenContent(
+            projectsScreenUiState = ProjectsScreenUiState.Success(
+                listOf(
+                    Project(
+                        id = 1,
+                        description = "Gameifying the learning experience",
+                        imageUrl = "",
+                        projectUrl = "test.com",
+                        title = "Gameify"
+                    )
+                )
+            )
+        )
+    }
+}
+

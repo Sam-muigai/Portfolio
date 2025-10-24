@@ -21,6 +21,7 @@ class FeatureConventionPlugin : Plugin<Project> {
 
             dependencies {
                 implementation(project(":domain"))
+                implementation(project(":core:theme"))
                 implementation(libs.findLibrary("koin-compose").get())
             }
         }

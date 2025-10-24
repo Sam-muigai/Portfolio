@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
+import com.samkt.about.AboutScreen
 import com.samkt.home.HomeScreen
 import com.samkt.portfolio.R
 import com.samkt.projects.ProjectsScreen
@@ -116,12 +117,7 @@ fun MainAppNavGraph(modifier: Modifier = Modifier) {
                     )
                 }
                 entry<AboutMe> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = androidx.compose.ui.Alignment.Center
-                    ) {
-                        Text("About Me content goes here")
-                    }
+                    AboutScreen()
                 }
                 entry<Contact> {
                     Box(

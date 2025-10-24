@@ -150,7 +150,7 @@ fun ProjectScreenErrorScreen(
 }
 
 @Composable
-fun ProjectScreenContent(
+private fun ProjectScreenContent(
     modifier: Modifier = Modifier,
     projects: List<Project>,
     onViewDetails: (String) -> Unit = {}

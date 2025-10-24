@@ -51,6 +51,7 @@ dependencies {
     implementation(project(":core:network"))
     implementation(project(":data"))
     implementation(project(":features:projects"))
+    implementation(project(":features:about"))
 
     implementation(libs.koin.android)
 

@@ -1,6 +1,7 @@
 package com.samkt.portfolio
 
 import android.app.Application
+import com.samkt.about.di.aboutScreenModule
 import com.samkt.data.di.dataModule
 import com.samkt.home.di.homeScreenModule
 import com.samkt.network.di.networkModule
@@ -16,6 +17,7 @@ class PortfolioApplication : Application() {
         val modules = listOf(
             homeScreenModule,
             projectScreenModule,
+            aboutScreenModule,
             networkModule,
             dataModule
         )

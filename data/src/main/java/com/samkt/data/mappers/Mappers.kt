@@ -1,7 +1,9 @@
 package com.samkt.data.mappers
 
+import com.samkt.domain.models.Experience
 import com.samkt.domain.models.Project
 import com.samkt.domain.models.UserInformation
+import com.samkt.network.dtos.ExperienceResponse
 import com.samkt.network.dtos.ProjectResponse
 import com.samkt.network.dtos.UserResponse
 
@@ -22,5 +24,16 @@ fun ProjectResponse.toDomain(): Project {
         imageUrl = imageUrl,
         projectUrl = projectUrl,
         title = title
+    )
+}
+
+fun ExperienceResponse.toDomain(): Experience {
+    return Experience(
+        companyName = companyName,
+        description = description,
+        fromDate = fromDate,
+        toDate = toDate,
+        title = title,
+        location = location
     )
 }

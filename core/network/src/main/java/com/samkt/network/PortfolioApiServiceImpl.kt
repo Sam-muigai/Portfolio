@@ -1,5 +1,6 @@
 package com.samkt.network
 
+import com.samkt.network.dtos.ExperienceResponse
 import com.samkt.network.dtos.ProjectResponse
 import com.samkt.network.dtos.UserResponse
 import com.samkt.network.helpers.ApiResponse
@@ -19,6 +20,12 @@ class PortfolioApiServiceImpl(
     override suspend fun getProjects(userId: Int): ApiResponse<List<ProjectResponse>> {
         return safeApiCall {
             client.get("$BASE_URL/project/all?userId=$userId")
+        }
+    }
+
+    override suspend fun getExperiences(userId: Int): ApiResponse<List<ExperienceResponse>> {
+        return safeApiCall {
+            client.get("$BASE_URL/experience/all?userId=$userId")
         }
     }
 

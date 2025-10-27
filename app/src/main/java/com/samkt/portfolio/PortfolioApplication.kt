@@ -3,6 +3,7 @@ package com.samkt.portfolio
 import android.app.Application
 import com.samkt.about.di.aboutScreenModule
 import com.samkt.data.di.dataModule
+import com.samkt.domain.di.domainModule
 import com.samkt.home.di.homeScreenModule
 import com.samkt.network.di.networkModule
 import com.samkt.projects.di.projectScreenModule
@@ -19,7 +20,8 @@ class PortfolioApplication : Application() {
             projectScreenModule,
             aboutScreenModule,
             networkModule,
-            dataModule
+            dataModule,
+            domainModule
         )
 
         startKoin {

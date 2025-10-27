@@ -50,6 +50,7 @@ dependencies {
     implementation(project(":features:home"))
     implementation(project(":core:network"))
     implementation(project(":data"))
+    implementation(project(":domain"))
     implementation(project(":features:projects"))
     implementation(project(":features:about"))
 

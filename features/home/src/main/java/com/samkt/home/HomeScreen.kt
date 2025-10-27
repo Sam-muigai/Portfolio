@@ -2,7 +2,9 @@ package com.samkt.home
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,13 +52,19 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
     homeScreenViewModel: HomeScreenViewModel = koinViewModel(),
-    onSettingsClicked: () -> Unit
+    onSettingsClicked: () -> Unit,
+    onProjectsClick: () -> Unit,
+    onAboutMeClick: () -> Unit,
+    onContactClick: () -> Unit
 ) {
     val homeScreenUiState =
         homeScreenViewModel.homeScreenUiState.collectAsStateWithLifecycle().value
     HomeScreenContent(
         homeScreenUiState = homeScreenUiState,
-        onSettingsClicked = onSettingsClicked
+        onSettingsClicked = onSettingsClicked,
+        onProjectsClick = onProjectsClick,
+        onAboutMeClick = onAboutMeClick,
+        onContactClick = onContactClick
     )
 }
 
@@ -65,7 +73,10 @@ fun HomeScreen(
 fun HomeScreenContent(
     modifier: Modifier = Modifier,
     homeScreenUiState: HomeScreenUiState,
-    onSettingsClicked: () -> Unit = {}
+    onSettingsClicked: () -> Unit = {},
+    onProjectsClick: () -> Unit = {},
+    onAboutMeClick: () -> Unit = {},
+    onContactClick: () -> Unit = {}
 ) {
     Scaffold(
         modifier = modifier
@@ -114,7 +125,10 @@ fun HomeScreenContent(
 
                 is HomeScreenUiState.Success -> {
                     HomeScreenContent(
-                        userInformation = homeScreenUiState.userInformation
+                        userInformation = homeScreenUiState.userInformation,
+                        onContactClick = onContactClick,
+                        onProjectsClick = onProjectsClick,
+                        onAboutMeClick = onAboutMeClick
                     )
                 }
             }
@@ -157,7 +171,10 @@ fun HomeScreenErrorScreen(
 @Composable
 fun HomeScreenContent(
     modifier: Modifier = Modifier,
-    userInformation: UserInformation
+    userInformation: UserInformation,
+    onProjectsClick: () -> Unit,
+    onAboutMeClick: () -> Unit,
+    onContactClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -203,15 +220,18 @@ fun HomeScreenContent(
         }
         QuickAccessCard(
             icon = R.drawable.ic_outline_work,
-            label = stringResource(R.string.projects)
+            label = stringResource(R.string.projects),
+            onClick = onProjectsClick
         )
         QuickAccessCard(
             icon = R.drawable.ic_outline_person,
-            label = stringResource(R.string.about_me)
+            label = stringResource(R.string.about_me),
+            onClick = onAboutMeClick
         )
         QuickAccessCard(
             icon = R.drawable.ic_outline_email,
-            label = stringResource(R.string.contact_me)
+            label = stringResource(R.string.contact_me),
+            onClick = onContactClick
         )
     }
 }
@@ -220,14 +240,17 @@ fun HomeScreenContent(
 fun QuickAccessCard(
     modifier: Modifier = Modifier,
     label: String,
-    @DrawableRes icon: Int
+    @DrawableRes icon: Int,
+    onClick: () -> Unit = {}
 ) {
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = 8.dp),
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        shape = MaterialTheme.shapes.small
+            .padding(bottom = 8.dp)
+            .clickable(onClick = onClick),
+        color = MaterialTheme.colorScheme.background,
+        shape = MaterialTheme.shapes.small,
+        border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.outline)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -235,9 +258,7 @@ fun QuickAccessCard(
         ) {
             Surface(
                 modifier = Modifier,
-                color = MaterialTheme.colorScheme.surfaceVariant.copy(
-                    alpha = 0.7f
-                ),
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 shape = MaterialTheme.shapes.small
             ) {
                 Box(

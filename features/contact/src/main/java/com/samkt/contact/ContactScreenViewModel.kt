@@ -1,5 +1,8 @@
 package com.samkt.contact
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.samkt.domain.helpers.Result
@@ -19,6 +22,27 @@ class ContactScreenViewModel(
     private val _contactScreenUiState =
         MutableStateFlow<ContactScreenUiState>(ContactScreenUiState.Loading)
     val contactScreenUiState = _contactScreenUiState.asStateFlow()
+
+    var email by mutableStateOf("")
+        private set
+
+    var name by mutableStateOf("")
+        private set
+
+    var message by mutableStateOf("")
+        private set
+
+    fun onEmailChange(email: String) {
+        this.email = email
+    }
+
+    fun onNameChange(name: String) {
+        this.name = name
+    }
+
+    fun onMessageChange(message: String) {
+        this.message = message
+    }
 
 
     init {

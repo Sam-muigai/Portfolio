@@ -1,6 +1,7 @@
 package com.samkt.contact
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -48,7 +49,6 @@ fun ContactScreen(
 ) {
     val contactScreenUiState =
         contactScreenViewModel.contactScreenUiState.collectAsStateWithLifecycle().value
-    val context = LocalContext.current
 
     val uriHandler = LocalUriHandler.current
     ContactScreenContent(
@@ -56,7 +56,13 @@ fun ContactScreen(
         contactScreenUiState = contactScreenUiState,
         onSocialMediaClicked = { link ->
             uriHandler.openUri(link.formatLink())
-        }
+        },
+        email = contactScreenViewModel.email,
+        onEmailChange = contactScreenViewModel::onEmailChange,
+        name = contactScreenViewModel.name,
+        onNameChange = contactScreenViewModel::onNameChange,
+        message = contactScreenViewModel.message,
+        onMessageChange = contactScreenViewModel::onMessageChange
     )
 }
 
@@ -66,7 +72,13 @@ fun ContactScreenContent(
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit = {},
     contactScreenUiState: ContactScreenUiState,
-    onSocialMediaClicked: (link: String) -> Unit = {}
+    onSocialMediaClicked: (link: String) -> Unit = {},
+    email: String,
+    onEmailChange: (String) -> Unit = {},
+    name:String,
+    onNameChange: (String) -> Unit = {},
+    message: String,
+    onMessageChange: (String) -> Unit = {}
 ) {
     Scaffold(
         modifier = modifier
@@ -79,7 +91,7 @@ fun ContactScreenContent(
                 ),
                 title = {
                     Text(
-                        "Contact",
+                        stringResource(R.string.contact),
                         style = MaterialTheme.typography.bodyLarge.copy(
                             fontWeight = FontWeight.Bold
                         )
@@ -106,52 +118,45 @@ fun ContactScreenContent(
                 .verticalScroll(rememberScrollState())
         ) {
             Text(
-                "Let's Connect",
+                stringResource(R.string.lets_connect),
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.ExtraBold
                 )
             )
             Spacer(Modifier.height(8.dp))
             Text(
-                "I'm always open to discussing new projects, creative ideas, or just a friendly chat. Feel free to reach out through any of the channels below.",
+                stringResource(R.string.open_for_discussion),
                 style = MaterialTheme.typography.bodyMedium
             )
             Spacer(Modifier.height(16.dp))
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = "",
+                value = name,
                 shape = MaterialTheme.shapes.small,
-                onValueChange = {},
+                onValueChange = onNameChange,
                 placeholder = {
-                    Text(
-                        "Your name",
-
-                        )
+                    Text(stringResource(R.string.your_name))
                 }
             )
             Spacer(Modifier.height(16.dp))
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = "",
+                value = email,
                 shape = MaterialTheme.shapes.small,
-                onValueChange = {},
+                onValueChange = onEmailChange,
                 placeholder = {
-                    Text(
-                        "Your Email",
-                    )
+                    Text(stringResource(R.string.your_email))
                 }
             )
             Spacer(Modifier.height(16.dp))
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = "",
+                value = message,
                 shape = MaterialTheme.shapes.small,
                 minLines = 6,
-                onValueChange = {},
+                onValueChange = onMessageChange,
                 placeholder = {
-                    Text(
-                        "Your message",
-                    )
+                    Text(stringResource(R.string.your_message))
                 }
             )
             Spacer(Modifier.height(16.dp))
@@ -160,7 +165,7 @@ fun ContactScreenContent(
                 modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.small
             ) {
-                Text("Send Message", fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.send_message), fontWeight = FontWeight.Bold)
             }
             Spacer(Modifier.height(16.dp))
             SocialMediaAccountContent(
@@ -213,7 +218,7 @@ fun SocialMediaSuccess(
         modifier = modifier
     ) {
         Text(
-            "Other Ways to Connect",
+            stringResource(R.string.other_ways),
             style = MaterialTheme.typography.bodyLarge.copy(
                 fontWeight = FontWeight.ExtraBold
             )
@@ -222,11 +227,11 @@ fun SocialMediaSuccess(
         if (socialMedia.xUrl.isNotEmpty()) {
             SocialMediaCard(
                 modifier = Modifier,
-                label = "Twitter",
+                label = stringResource(R.string.twitter),
                 trailingContent = {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = "Twitter"
+                        contentDescription = stringResource(R.string.twitter)
                     )
                 },
                 link = socialMedia.xUrl,
@@ -236,11 +241,11 @@ fun SocialMediaSuccess(
         if (socialMedia.linkedinUrl.isNotEmpty()) {
             SocialMediaCard(
                 modifier = Modifier,
-                label = "LinkedIn",
+                label = stringResource(R.string.linkedIn),
                 trailingContent = {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = "LinkedIn"
+                        contentDescription = stringResource(R.string.linkedIn)
                     )
                 },
                 link = socialMedia.linkedinUrl,
@@ -250,14 +255,28 @@ fun SocialMediaSuccess(
         if (socialMedia.githubUrl.isNotEmpty()) {
             SocialMediaCard(
                 modifier = Modifier,
-                label = "Github",
+                label = stringResource(R.string.github),
                 trailingContent = {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = "Github"
+                        contentDescription = stringResource(R.string.github)
                     )
                 },
                 link = socialMedia.githubUrl,
+                onClick = onSocialMediaClicked
+            )
+        }
+        if (socialMedia.youtubeUrl.isNotEmpty()) {
+            SocialMediaCard(
+                modifier = Modifier,
+                label = stringResource(R.string.youtube),
+                trailingContent = {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = stringResource(R.string.youtube)
+                    )
+                },
+                link = socialMedia.youtubeUrl,
                 onClick = onSocialMediaClicked
             )
         }
@@ -269,8 +288,8 @@ fun SocialMediaSuccess(
 @Composable
 fun SocialMediaCard(
     modifier: Modifier = Modifier,
-    label: String = "",
-    link: String = "",
+    label: String,
+    link: String,
     trailingContent: (@Composable () -> Unit)? = {},
     onClick: (link: String) -> Unit = {}
 ) {
@@ -284,8 +303,9 @@ fun SocialMediaCard(
                     onClick(link)
                 }
             ),
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        shape = MaterialTheme.shapes.small
+        shape = MaterialTheme.shapes.small,
+        color = MaterialTheme.colorScheme.background,
+        border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.outline)
     ) {
         Row(
             modifier = Modifier

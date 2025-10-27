@@ -107,6 +107,15 @@ fun MainAppNavGraph(modifier: Modifier = Modifier) {
                     HomeScreen(
                         onSettingsClicked = {
 
+                        },
+                        onProjectsClick = {
+                            topLevelBackStack.addTopLevel(Projects)
+                        },
+                        onAboutMeClick = {
+                            topLevelBackStack.addTopLevel(AboutMe)
+                        },
+                        onContactClick = {
+                            topLevelBackStack.addTopLevel(Contact)
                         }
                     )
                 }

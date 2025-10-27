@@ -1,6 +1,7 @@
 package com.samkt.projects
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -189,8 +190,9 @@ fun ProjectCard(
         modifier = modifier
             .fillMaxWidth()
             .padding(bottom = 8.dp),
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        shape = MaterialTheme.shapes.small
+        color = MaterialTheme.colorScheme.background,
+        shape = MaterialTheme.shapes.small,
+        border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.outline)
     ) {
         Column(
             modifier = Modifier

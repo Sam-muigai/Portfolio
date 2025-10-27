@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about_me">About Me</string>
+    <string name="experience">Experience</string>
+    <string name="no_experience">No experience available</string>
+</resources>

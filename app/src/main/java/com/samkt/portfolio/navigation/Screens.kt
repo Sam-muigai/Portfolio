@@ -117,7 +117,11 @@ fun MainAppNavGraph(modifier: Modifier = Modifier) {
                     )
                 }
                 entry<AboutMe> {
-                    AboutScreen()
+                    AboutScreen(
+                        onBackClick = {
+                            topLevelBackStack.removeLast()
+                        }
+                    )
                 }
                 entry<Contact> {
                     Box(

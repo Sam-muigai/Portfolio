@@ -17,10 +17,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -41,12 +44,14 @@ import kotlin.math.exp
 
 @Composable
 fun AboutScreen(
-    aboutScreenViewModel: AboutScreenViewModel = koinViewModel()
+    aboutScreenViewModel: AboutScreenViewModel = koinViewModel(),
+    onBackClick: () -> Unit
 ) {
     val aboutScreenUiState =
         aboutScreenViewModel.aboutScreenUiState.collectAsStateWithLifecycle().value
     AboutScreenContent(
-        aboutScreenUiState = aboutScreenUiState
+        aboutScreenUiState = aboutScreenUiState,
+        onBackClick = onBackClick
     )
 }
 
@@ -55,6 +60,7 @@ fun AboutScreen(
 fun AboutScreenContent(
     modifier: Modifier = Modifier,
     aboutScreenUiState: AboutScreenUiState,
+    onBackClick: () -> Unit = {}
 ) {
     Scaffold(
         modifier = modifier
@@ -64,12 +70,22 @@ fun AboutScreenContent(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        "About Me",
+                        stringResource(R.string.about_me),
                         style = MaterialTheme.typography.bodyLarge.copy(
                             fontWeight = FontWeight.Bold
                         )
                     )
                 },
+                navigationIcon = {
+                    IconButton(
+                        onClick = onBackClick,
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+                            contentDescription = null
+                        )
+                    }
+                }
             )
         }
     ) { paddingValues ->
@@ -191,7 +207,7 @@ fun AboutScreenContent(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(
-                            "About Me",
+                            stringResource(R.string.about_me),
                             fontWeight = FontWeight.Bold
                         )
                     }
@@ -212,7 +228,7 @@ fun AboutScreenContent(
             experiences == null -> {}
             experiences.isEmpty() -> {
                 item {
-                    Text("No experience available")
+                    Text(stringResource(R.string.no_experience))
                 }
             }
 
@@ -222,7 +238,7 @@ fun AboutScreenContent(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(
-                            "Experience",
+                            stringResource(R.string.experience),
                             fontWeight = FontWeight.Bold
                         )
                     }

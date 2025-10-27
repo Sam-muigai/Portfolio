@@ -7,4 +7,5 @@ data class UserInformation(
     val email: String,
     val name: String,
     val role: String,
+    val profileImage: String
 )

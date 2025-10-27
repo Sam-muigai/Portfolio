@@ -18,5 +18,7 @@ data class UserResponse(
     @SerialName("role")
     val role: String,
     @SerialName("social_media")
-    val socialMediaResponse: SocialMediaResponse
+    val socialMediaResponse: SocialMediaResponse,
+    @SerialName("profile_image")
+    val profileImage: String
 )

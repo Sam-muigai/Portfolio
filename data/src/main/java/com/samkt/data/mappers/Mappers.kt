@@ -15,7 +15,8 @@ fun UserResponse.toDomain(): UserInformation {
         email = email,
         about = about,
         country = country,
-        role = role
+        role = role,
+        profileImage = profileImage
     )
 }
 

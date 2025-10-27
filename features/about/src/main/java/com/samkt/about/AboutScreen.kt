@@ -3,6 +3,7 @@ package com.samkt.about
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,11 +34,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.samkt.domain.models.Experience
 import com.samkt.domain.models.UserInformation
 import org.koin.compose.viewmodel.koinViewModel
@@ -169,16 +172,19 @@ fun AboutScreenContent(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Box(
+                    AsyncImage(
                         modifier = Modifier
                             .size(96.dp)
+                            .border(1.5.dp, MaterialTheme.colorScheme.onBackground, CircleShape)
                             .clip(
                                 CircleShape
-                            )
-                            .background(MaterialTheme.colorScheme.onBackground)
+                            ),
+                        model = userInformation!!.profileImage,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop
                     )
                     Text(
-                        userInformation!!.name,
+                        userInformation.name,
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontWeight = FontWeight.Bold
                         )

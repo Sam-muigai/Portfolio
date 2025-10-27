@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.samkt.about.AboutScreen
+import com.samkt.contact.ContactScreen
 import com.samkt.home.HomeScreen
 import com.samkt.portfolio.R
 import com.samkt.projects.ProjectsScreen
@@ -124,12 +125,11 @@ fun MainAppNavGraph(modifier: Modifier = Modifier) {
                     )
                 }
                 entry<Contact> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = androidx.compose.ui.Alignment.Center
-                    ) {
-                        Text("Contact content goes here")
-                    }
+                    ContactScreen(
+                        onBackClicked = {
+                            topLevelBackStack.removeLast()
+                        }
+                    )
                 }
             },
         )

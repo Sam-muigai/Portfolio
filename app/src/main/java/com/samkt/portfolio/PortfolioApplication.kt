@@ -2,6 +2,7 @@ package com.samkt.portfolio
 
 import android.app.Application
 import com.samkt.about.di.aboutScreenModule
+import com.samkt.contact.di.contactScreenModule
 import com.samkt.data.di.dataModule
 import com.samkt.domain.di.domainModule
 import com.samkt.home.di.homeScreenModule
@@ -19,6 +20,7 @@ class PortfolioApplication : Application() {
             homeScreenModule,
             projectScreenModule,
             aboutScreenModule,
+            contactScreenModule,
             networkModule,
             dataModule,
             domainModule

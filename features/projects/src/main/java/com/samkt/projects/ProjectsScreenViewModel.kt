@@ -43,3 +43,11 @@ sealed interface ProjectsScreenUiState {
     data class Success(val projects: List<Project>) : ProjectsScreenUiState
     data class Error(val message: String) : ProjectsScreenUiState
 }
+
+fun String.formatLink(): String {
+    return if (!this.startsWith("http://") && !this.startsWith("https://")) {
+        "https://$this"
+    } else {
+        this
+    }
+}

@@ -1,6 +1,8 @@
 package com.samkt.contact
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +18,7 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,12 +27,18 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.samkt.domain.models.SocialMedia
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -37,8 +46,17 @@ fun ContactScreen(
     contactScreenViewModel: ContactScreenViewModel = koinViewModel(),
     onBackClicked: () -> Unit
 ) {
+    val contactScreenUiState =
+        contactScreenViewModel.contactScreenUiState.collectAsStateWithLifecycle().value
+    val context = LocalContext.current
+
+    val uriHandler = LocalUriHandler.current
     ContactScreenContent(
-        onBackClicked = onBackClicked
+        onBackClicked = onBackClicked,
+        contactScreenUiState = contactScreenUiState,
+        onSocialMediaClicked = { link ->
+            uriHandler.openUri(link.formatLink())
+        }
     )
 }
 
@@ -46,7 +64,9 @@ fun ContactScreen(
 @Composable
 fun ContactScreenContent(
     modifier: Modifier = Modifier,
-    onBackClicked: () -> Unit = {}
+    onBackClicked: () -> Unit = {},
+    contactScreenUiState: ContactScreenUiState,
+    onSocialMediaClicked: (link: String) -> Unit = {}
 ) {
     Scaffold(
         modifier = modifier
@@ -54,6 +74,9 @@ fun ContactScreenContent(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background
+                ),
                 title = {
                     Text(
                         "Contact",
@@ -140,23 +163,63 @@ fun ContactScreenContent(
                 Text("Send Message", fontWeight = FontWeight.Bold)
             }
             Spacer(Modifier.height(16.dp))
-            Text(
-                "Other Ways to Connect",
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    fontWeight = FontWeight.ExtraBold
-                )
+            SocialMediaAccountContent(
+                contactScreenUiState = contactScreenUiState,
+                onSocialMediaClicked = onSocialMediaClicked
             )
-            Spacer(Modifier.height(16.dp))
-            SocialMediaCard(
-                modifier = Modifier,
-                label = "Email",
-                trailingContent = {
-                    Text(
-                        "sammuigai880@gmail.com",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+        }
+    }
+}
+
+
+@Composable
+fun SocialMediaAccountContent(
+    modifier: Modifier = Modifier,
+    contactScreenUiState: ContactScreenUiState,
+    onSocialMediaClicked: (link: String) -> Unit
+) {
+    AnimatedContent(
+        modifier = modifier,
+        targetState = contactScreenUiState
+    ) { contactScreenState ->
+        when (contactScreenState) {
+            is ContactScreenUiState.Error -> Unit
+            ContactScreenUiState.Loading -> {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    CircularProgressIndicator(strokeWidth = 1.2.dp)
                 }
+            }
+
+            is ContactScreenUiState.Success -> {
+                SocialMediaSuccess(
+                    socialMedia = contactScreenState.socialMedia,
+                    onSocialMediaClicked = onSocialMediaClicked
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun SocialMediaSuccess(
+    modifier: Modifier = Modifier,
+    socialMedia: SocialMedia,
+    onSocialMediaClicked: (link: String) -> Unit
+) {
+    Column(
+        modifier = modifier
+    ) {
+        Text(
+            "Other Ways to Connect",
+            style = MaterialTheme.typography.bodyLarge.copy(
+                fontWeight = FontWeight.ExtraBold
             )
+        )
+        Spacer(Modifier.height(16.dp))
+        if (socialMedia.xUrl.isNotEmpty()) {
             SocialMediaCard(
                 modifier = Modifier,
                 label = "Twitter",
@@ -165,8 +228,12 @@ fun ContactScreenContent(
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                         contentDescription = "Twitter"
                     )
-                }
+                },
+                link = socialMedia.xUrl,
+                onClick = onSocialMediaClicked
             )
+        }
+        if (socialMedia.linkedinUrl.isNotEmpty()) {
             SocialMediaCard(
                 modifier = Modifier,
                 label = "LinkedIn",
@@ -175,22 +242,29 @@ fun ContactScreenContent(
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                         contentDescription = "LinkedIn"
                     )
-                }
+                },
+                link = socialMedia.linkedinUrl,
+                onClick = onSocialMediaClicked
             )
+        }
+        if (socialMedia.githubUrl.isNotEmpty()) {
             SocialMediaCard(
                 modifier = Modifier,
                 label = "Github",
                 trailingContent = {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = "LinkedIn"
+                        contentDescription = "Github"
                     )
-                }
+                },
+                link = socialMedia.githubUrl,
+                onClick = onSocialMediaClicked
             )
-            Spacer(Modifier.height(64.dp))
         }
+        Spacer(Modifier.height(64.dp))
     }
 }
+
 
 @Composable
 fun SocialMediaCard(
@@ -202,14 +276,14 @@ fun SocialMediaCard(
 ) {
     Surface(
         modifier = modifier
+            .fillMaxWidth()
+            .height(72.dp)
+            .padding(bottom = 16.dp)
             .clickable(
                 onClick = {
                     onClick(link)
                 }
-            )
-            .fillMaxWidth()
-            .height(72.dp)
-            .padding(bottom = 16.dp),
+            ),
         color = MaterialTheme.colorScheme.surfaceContainer,
         shape = MaterialTheme.shapes.small
     ) {

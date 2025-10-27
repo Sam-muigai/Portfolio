@@ -2,6 +2,7 @@ package com.samkt.network
 
 import com.samkt.network.dtos.ExperienceResponse
 import com.samkt.network.dtos.ProjectResponse
+import com.samkt.network.dtos.SocialMediaResponse
 import com.samkt.network.dtos.UserResponse
 import com.samkt.network.helpers.ApiResponse
 import com.samkt.network.helpers.safeApiCall
@@ -26,6 +27,12 @@ class PortfolioApiServiceImpl(
     override suspend fun getExperiences(userId: Int): ApiResponse<List<ExperienceResponse>> {
         return safeApiCall {
             client.get("$BASE_URL/experience/all?userId=$userId")
+        }
+    }
+
+    override suspend fun getSocialMediaInformation(userId: Int): ApiResponse<SocialMediaResponse> {
+        return safeApiCall {
+            client.get("$BASE_URL/social-media?userId=$userId")
         }
     }
 

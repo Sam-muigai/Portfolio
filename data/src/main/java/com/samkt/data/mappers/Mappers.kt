@@ -2,9 +2,11 @@ package com.samkt.data.mappers
 
 import com.samkt.domain.models.Experience
 import com.samkt.domain.models.Project
+import com.samkt.domain.models.SocialMedia
 import com.samkt.domain.models.UserInformation
 import com.samkt.network.dtos.ExperienceResponse
 import com.samkt.network.dtos.ProjectResponse
+import com.samkt.network.dtos.SocialMediaResponse
 import com.samkt.network.dtos.UserResponse
 
 fun UserResponse.toDomain(): UserInformation {
@@ -35,5 +37,15 @@ fun ExperienceResponse.toDomain(): Experience {
         toDate = toDate,
         title = title,
         location = location
+    )
+}
+
+fun SocialMediaResponse.toDomain(): SocialMedia {
+    return SocialMedia(
+        githubUrl = githubUrl,
+        linkedinUrl = linkedinUrl,
+        xUrl = xUrl,
+        youtubeUrl = youtubeUrl,
+        portfolioUrl = portfolioUrl
     )
 }

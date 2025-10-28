@@ -20,6 +20,7 @@ tasks.withType<KotlinCompile>().configureEach {
 dependencies {
     compileOnly(libs.android.gradle.plugin)
     compileOnly(libs.kotlin.gradle.plugin)
+    compileOnly(libs.spotless.gradle.plugin)
 }
 
 gradlePlugin {
@@ -42,6 +43,11 @@ gradlePlugin {
         register("androidFeature") {
             id = "com.samkt.feature"
             implementationClass = "com.samkt.convention.FeatureConventionPlugin"
+        }
+
+        register("spotless") {
+            id = "com.samkt.spotless"
+            implementationClass = "com.samkt.convention.SpotlessConventionPlugin"
         }
     }
 }

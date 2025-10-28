@@ -22,6 +22,7 @@ nav3Core = "1.0.0-alpha10"
 lifecycleViewmodelNav3 = "2.10.0-alpha04"
 material3AdaptiveNav3 = "1.0.0-alpha03"
 coil = "2.7.0"
+spotless = "6.25.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,6 +55,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 # gradle plugins
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+spotless-gradle-plugin = { group = "com.diffplug.spotless", name = "spotless-plugin-gradle", version.ref = "spotless" }
 
 # koin
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }

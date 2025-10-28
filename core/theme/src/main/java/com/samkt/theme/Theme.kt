@@ -120,7 +120,7 @@ private val BlackAndWhiteLightScheme = lightColorScheme(
     onSurface = Black,
     surfaceVariant = LightGray,
     onSurfaceVariant = Black,
-    outline = OutlineGray
+    outline = OutlineGray,
 )
 
 // Dark B&W Color Scheme
@@ -137,7 +137,7 @@ private val BlackAndWhiteDarkScheme = darkColorScheme(
     onTertiary = Black,
     tertiaryContainer = DarkGray,
     onTertiaryContainer = White,
-    error = White, // Note: Using white for error is not accessible. See notes below.
+    error = Color.Red,
     onError = Black,
     errorContainer = DarkGray,
     onErrorContainer = White,
@@ -147,7 +147,8 @@ private val BlackAndWhiteDarkScheme = darkColorScheme(
     onSurface = White,
     surfaceVariant = DarkGray,
     onSurfaceVariant = LightGray,
-    outline = MidGray
+    outline = MidGray,
+    surfaceContainer = Black
 )
 
 

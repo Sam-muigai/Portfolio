@@ -3,13 +3,20 @@ package com.samkt.portfolio.navigation
 import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -26,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.samkt.about.AboutScreen
@@ -74,26 +82,32 @@ fun MainAppNavGraph(modifier: Modifier = Modifier) {
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            NavigationBar {
-                topLevelRoutes().forEach { topLevelRoute ->
-                    val isSelected = topLevelRoute == topLevelBackStack.topLevelKey
-                    NavigationBarItem(
-                        selected = isSelected,
-                        onClick = {
-                            topLevelBackStack.addTopLevel(topLevelRoute)
-                        },
-                        icon = {
-                            Icon(
-                                painter = painterResource(topLevelRoute.icon),
-                                contentDescription = null
-                            )
-                        },
-                        label = {
-                            Text(
-                                stringResource(topLevelRoute.label)
-                            )
-                        }
-                    )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                HorizontalDivider()
+                NavigationBar{
+                    topLevelRoutes().forEach { topLevelRoute ->
+                        val isSelected = topLevelRoute == topLevelBackStack.topLevelKey
+                        NavigationBarItem(
+                            selected = isSelected,
+                            onClick = {
+                                topLevelBackStack.addTopLevel(topLevelRoute)
+                            },
+                            icon = {
+                                Icon(
+                                    painter = painterResource(topLevelRoute.icon),
+                                    contentDescription = null
+                                )
+                            },
+                            label = {
+                                Text(
+                                    stringResource(topLevelRoute.label)
+                                )
+                            }
+                        )
+                    }
                 }
             }
         }

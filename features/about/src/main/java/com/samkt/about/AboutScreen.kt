@@ -274,7 +274,7 @@ fun ExperienceCard(
     ) {
         Surface(
             modifier = Modifier,
-            color = MaterialTheme.colorScheme.surfaceContainer,
+            color = MaterialTheme.colorScheme.surfaceVariant,
             shape = MaterialTheme.shapes.small
         ) {
             Box(

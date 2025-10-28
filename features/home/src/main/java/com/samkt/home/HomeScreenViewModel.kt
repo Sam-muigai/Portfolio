@@ -12,28 +12,28 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeScreenViewModel(
-    private val userRepository: UserRepository
+  private val userRepository: UserRepository,
 ) : ViewModel() {
 
-    private val _homeScreenUiState = MutableStateFlow<HomeScreenUiState>(HomeScreenUiState.Loading)
-    val homeScreenUiState = _homeScreenUiState.asStateFlow()
+  private val _homeScreenUiState = MutableStateFlow<HomeScreenUiState>(HomeScreenUiState.Loading)
+  val homeScreenUiState = _homeScreenUiState.asStateFlow()
 
-    init {
-        loadUserInformation()
-    }
+  init {
+    loadUserInformation()
+  }
 
-    private fun loadUserInformation() {
-        viewModelScope.launch {
-            when (val result = userRepository.getUserInformation(USER_ID)) {
-                is Result.Error -> _homeScreenUiState.update { HomeScreenUiState.Error(result.message) }
-                is Result.Success -> _homeScreenUiState.update { HomeScreenUiState.Success(result.data) }
-            }
-        }
+  private fun loadUserInformation() {
+    viewModelScope.launch {
+      when (val result = userRepository.getUserInformation(USER_ID)) {
+        is Result.Error -> _homeScreenUiState.update { HomeScreenUiState.Error(result.message) }
+        is Result.Success -> _homeScreenUiState.update { HomeScreenUiState.Success(result.data) }
+      }
     }
+  }
 }
 
 sealed class HomeScreenUiState {
-    data object Loading : HomeScreenUiState()
-    data class Success(val userInformation: UserInformation) : HomeScreenUiState()
-    data class Error(val message: String) : HomeScreenUiState()
+  data object Loading : HomeScreenUiState()
+  data class Success(val userInformation: UserInformation) : HomeScreenUiState()
+  data class Error(val message: String) : HomeScreenUiState()
 }

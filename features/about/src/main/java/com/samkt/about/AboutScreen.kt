@@ -295,7 +295,7 @@ fun ExperienceCard(
         style = MaterialTheme.typography.bodyMedium,
       )
       Text(
-        text = "${experience.fromDate} - ${experience.toDate}",
+        text = "${experience.fromDate} - ${experience.toDate.formatDate()}",
         style = MaterialTheme.typography.labelSmall,
       )
     }

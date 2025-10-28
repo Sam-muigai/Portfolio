@@ -10,6 +10,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class AboutScreenViewModel(
   private val getAboutUseCase: GetAboutUseCase,
@@ -42,4 +45,18 @@ sealed interface AboutScreenUiState {
   data class Success(val aboutMe: AboutMe) : AboutScreenUiState
   data class Error(val message: String) : AboutScreenUiState
   data object Loading : AboutScreenUiState
+}
+
+/**
+ * Formats a date string (in "yyyy-MM-dd" format).
+ * If the date is today, returns "Present"; otherwise returns the original date string.
+ */
+fun String.formatDate(): String {
+  return try {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val today = dateFormat.format(Date())
+    if (this == today) "Present" else this
+  } catch (e: Exception) {
+    this
+  }
 }

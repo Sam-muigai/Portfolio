@@ -2,12 +2,24 @@
 
 A modern Android portfolio application built with Jetpack Compose and clean architecture principles.
 
-## Features
-
-- **Home**: Main landing page showcasing personal information
-- **Projects**: Display of portfolio projects and work samples
-- **About**: Personal information and background details
-- **Contact**: Contact information and communication methods
+<table>
+  <tr>
+    <th>Home Screen</th>
+    <th>Projects Screen</th>
+    <th>About Me Screen</th>
+  </tr>
+  <tr>
+    <td><img src="screenshots/home.png" width="250" alt="Home Screen"></td>
+    <td><img src="screenshots/projects.png" width="250" alt="Projects Screen"></td>
+    <td><img src="screenshots/about.png" width="250" alt="About Screen"></td>
+  </tr>
+  <tr>
+    <th>Contact Screen</th>
+  </tr>
+  <tr>
+    <td><img src="screenshots/contact.png" width="250" alt="Contact Screen"></td>
+  </tr>
+</table>
 
 ## Tech Stack
 

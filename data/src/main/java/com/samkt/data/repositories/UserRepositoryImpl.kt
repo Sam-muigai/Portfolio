@@ -9,19 +9,19 @@ import com.samkt.network.PortfolioApiService
 import com.samkt.network.helpers.ApiResponse
 
 class UserRepositoryImpl(
-    private val portfolioApiService: PortfolioApiService
+  private val portfolioApiService: PortfolioApiService,
 ) : UserRepository {
-    override suspend fun getUserInformation(userId: Int): Result<UserInformation> {
-        return when (val response = portfolioApiService.getUserInformation(userId)) {
-            is ApiResponse.Error -> Result.Error(response.message)
-            is ApiResponse.Success -> Result.Success(response.data.toDomain())
-        }
+  override suspend fun getUserInformation(userId: Int): Result<UserInformation> {
+    return when (val response = portfolioApiService.getUserInformation(userId)) {
+      is ApiResponse.Error -> Result.Error(response.message)
+      is ApiResponse.Success -> Result.Success(response.data.toDomain())
     }
+  }
 
-    override suspend fun getSocialMediaInformation(userId: Int): Result<SocialMedia> {
-        return when (val response = portfolioApiService.getSocialMediaInformation(userId)) {
-            is ApiResponse.Error -> Result.Error(response.message)
-            is ApiResponse.Success -> Result.Success(response.data.toDomain())
-        }
+  override suspend fun getSocialMediaInformation(userId: Int): Result<SocialMedia> {
+    return when (val response = portfolioApiService.getSocialMediaInformation(userId)) {
+      is ApiResponse.Error -> Result.Error(response.message)
+      is ApiResponse.Success -> Result.Success(response.data.toDomain())
     }
+  }
 }

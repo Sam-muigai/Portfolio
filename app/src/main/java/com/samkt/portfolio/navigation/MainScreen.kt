@@ -6,12 +6,10 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun MainScreen() {
-    Scaffold(
-        modifier = Modifier,
-        bottomBar = {
-
-        }
-    ) { paddingValues ->
-
-    }
+  Scaffold(
+    modifier = Modifier,
+    bottomBar = {
+    },
+  ) { paddingValues ->
+  }
 }

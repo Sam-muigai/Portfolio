@@ -13,23 +13,23 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 
 class PortfolioApplication : Application() {
-    override fun onCreate() {
-        super.onCreate()
+  override fun onCreate() {
+    super.onCreate()
 
-        val modules = listOf(
-            homeScreenModule,
-            projectScreenModule,
-            aboutScreenModule,
-            contactScreenModule,
-            networkModule,
-            dataModule,
-            domainModule
-        )
+    val modules = listOf(
+      homeScreenModule,
+      projectScreenModule,
+      aboutScreenModule,
+      contactScreenModule,
+      networkModule,
+      dataModule,
+      domainModule,
+    )
 
-        startKoin {
-            androidLogger()
-            androidContext(this@PortfolioApplication)
-            modules(modules)
-        }
+    startKoin {
+      androidLogger()
+      androidContext(this@PortfolioApplication)
+      modules(modules)
     }
+  }
 }

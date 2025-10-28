@@ -9,7 +9,7 @@ import com.samkt.domain.repositories.UserRepository
 import org.koin.dsl.module
 
 val dataModule = module {
-    single<UserRepository> { UserRepositoryImpl(get()) }
-    single<ProjectRepository> { ProjectRepositoryImpl(get()) }
-    single<ExperienceRepository> { ExperienceRepositoryImpl(get()) }
+  single<UserRepository> { UserRepositoryImpl(get()) }
+  single<ProjectRepository> { ProjectRepositoryImpl(get()) }
+  single<ExperienceRepository> { ExperienceRepositoryImpl(get()) }
 }

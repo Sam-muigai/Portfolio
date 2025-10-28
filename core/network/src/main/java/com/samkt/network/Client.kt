@@ -13,34 +13,34 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 fun getKtorClient() = HttpClient {
-    install(ContentNegotiation) {
-        json(
-            Json {
-                ignoreUnknownKeys = true
-                encodeDefaults = true
-                coerceInputValues = true
-                prettyPrint = true
-                isLenient = true
-            }
-        )
-    }
+  install(ContentNegotiation) {
+    json(
+      Json {
+        ignoreUnknownKeys = true
+        encodeDefaults = true
+        coerceInputValues = true
+        prettyPrint = true
+        isLenient = true
+      },
+    )
+  }
 
-    install(Logging) {
-        level = LogLevel.BODY
-        logger = object : Logger {
-            override fun log(message: String) {
-                println(message)
-            }
-        }
+  install(Logging) {
+    level = LogLevel.BODY
+    logger = object : Logger {
+      override fun log(message: String) {
+        println(message)
+      }
     }
+  }
 
-    install(HttpTimeout) {
-        requestTimeoutMillis = 20_000
-        connectTimeoutMillis = 20_000
-        socketTimeoutMillis = 20_000
-    }
+  install(HttpTimeout) {
+    requestTimeoutMillis = 20_000
+    connectTimeoutMillis = 20_000
+    socketTimeoutMillis = 20_000
+  }
 
-    install(DefaultRequest) {
-        header(HttpHeaders.ContentType, "application/json")
-    }
+  install(DefaultRequest) {
+    header(HttpHeaders.ContentType, "application/json")
+  }
 }

@@ -1,5 +1,6 @@
 plugins {
     id("com.samkt.application")
+    id("com.samkt.spotless")
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 }

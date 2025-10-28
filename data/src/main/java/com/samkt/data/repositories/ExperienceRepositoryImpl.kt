@@ -8,12 +8,12 @@ import com.samkt.network.PortfolioApiService
 import com.samkt.network.helpers.ApiResponse
 
 class ExperienceRepositoryImpl(
-    private val portfolioApiService: PortfolioApiService
+  private val portfolioApiService: PortfolioApiService,
 ) : ExperienceRepository {
-    override suspend fun getExperiences(userId: Int): Result<List<Experience>> {
-        return when (val response = portfolioApiService.getExperiences(userId)) {
-            is ApiResponse.Error -> Result.Error(response.message)
-            is ApiResponse.Success -> Result.Success(response.data.map { it.toDomain() })
-        }
+  override suspend fun getExperiences(userId: Int): Result<List<Experience>> {
+    return when (val response = portfolioApiService.getExperiences(userId)) {
+      is ApiResponse.Error -> Result.Error(response.message)
+      is ApiResponse.Success -> Result.Success(response.data.map { it.toDomain() })
     }
+  }
 }

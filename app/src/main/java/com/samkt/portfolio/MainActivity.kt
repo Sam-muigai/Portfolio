@@ -8,13 +8,13 @@ import com.samkt.portfolio.navigation.MainAppNavGraph
 import com.samkt.theme.PortfolioTheme
 
 class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            PortfolioTheme {
-                MainAppNavGraph()
-            }
-        }
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    enableEdgeToEdge()
+    setContent {
+      PortfolioTheme {
+        MainAppNavGraph()
+      }
     }
+  }
 }

@@ -10,43 +10,43 @@ import com.samkt.network.dtos.SocialMediaResponse
 import com.samkt.network.dtos.UserResponse
 
 fun UserResponse.toDomain(): UserInformation {
-    return UserInformation(
-        name = name,
-        email = email,
-        about = about,
-        country = country,
-        role = role,
-        profileImage = profileImage
-    )
+  return UserInformation(
+    name = name,
+    email = email,
+    about = about,
+    country = country,
+    role = role,
+    profileImage = profileImage,
+  )
 }
 
 fun ProjectResponse.toDomain(): Project {
-    return Project(
-        id = id,
-        description = description,
-        imageUrl = imageUrl,
-        projectUrl = projectUrl,
-        title = title
-    )
+  return Project(
+    id = id,
+    description = description,
+    imageUrl = imageUrl,
+    projectUrl = projectUrl,
+    title = title,
+  )
 }
 
 fun ExperienceResponse.toDomain(): Experience {
-    return Experience(
-        companyName = companyName,
-        description = description,
-        fromDate = fromDate,
-        toDate = toDate,
-        title = title,
-        location = location
-    )
+  return Experience(
+    companyName = companyName,
+    description = description,
+    fromDate = fromDate,
+    toDate = toDate,
+    title = title,
+    location = location,
+  )
 }
 
 fun SocialMediaResponse.toDomain(): SocialMedia {
-    return SocialMedia(
-        githubUrl = githubUrl,
-        linkedinUrl = linkedinUrl,
-        xUrl = xUrl,
-        youtubeUrl = youtubeUrl,
-        portfolioUrl = portfolioUrl
-    )
+  return SocialMedia(
+    githubUrl = githubUrl,
+    linkedinUrl = linkedinUrl,
+    xUrl = xUrl,
+    youtubeUrl = youtubeUrl,
+    portfolioUrl = portfolioUrl,
+  )
 }

@@ -14,67 +14,64 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
 class ContactScreenViewModel(
-    private val userRepository: UserRepository
+  private val userRepository: UserRepository,
 ) : ViewModel() {
 
-    private val _contactScreenUiState =
-        MutableStateFlow<ContactScreenUiState>(ContactScreenUiState.Loading)
-    val contactScreenUiState = _contactScreenUiState.asStateFlow()
+  private val _contactScreenUiState =
+    MutableStateFlow<ContactScreenUiState>(ContactScreenUiState.Loading)
+  val contactScreenUiState = _contactScreenUiState.asStateFlow()
 
-    var email by mutableStateOf("")
-        private set
+  var email by mutableStateOf("")
+    private set
 
-    var name by mutableStateOf("")
-        private set
+  var name by mutableStateOf("")
+    private set
 
-    var message by mutableStateOf("")
-        private set
+  var message by mutableStateOf("")
+    private set
 
-    fun onEmailChange(email: String) {
-        this.email = email
-    }
+  fun onEmailChange(email: String) {
+    this.email = email
+  }
 
-    fun onNameChange(name: String) {
-        this.name = name
-    }
+  fun onNameChange(name: String) {
+    this.name = name
+  }
 
-    fun onMessageChange(message: String) {
-        this.message = message
-    }
+  fun onMessageChange(message: String) {
+    this.message = message
+  }
 
+  init {
+    getSocialMediaAccounts()
+  }
 
-    init {
-        getSocialMediaAccounts()
-    }
-
-    private fun getSocialMediaAccounts() {
-        viewModelScope.launch {
-            when (val result = userRepository.getSocialMediaInformation(USER_ID)) {
-                is Result.Error -> {
-                    _contactScreenUiState.update { ContactScreenUiState.Error(result.message) }
-                }
-
-                is Result.Success -> {
-                    _contactScreenUiState.update { ContactScreenUiState.Success(result.data) }
-                }
-            }
+  private fun getSocialMediaAccounts() {
+    viewModelScope.launch {
+      when (val result = userRepository.getSocialMediaInformation(USER_ID)) {
+        is Result.Error -> {
+          _contactScreenUiState.update { ContactScreenUiState.Error(result.message) }
         }
+
+        is Result.Success -> {
+          _contactScreenUiState.update { ContactScreenUiState.Success(result.data) }
+        }
+      }
     }
+  }
 }
 
-
 sealed interface ContactScreenUiState {
-    data object Loading : ContactScreenUiState
-    data class Success(val socialMedia: SocialMedia) : ContactScreenUiState
-    data class Error(val message: String) : ContactScreenUiState
+  data object Loading : ContactScreenUiState
+  data class Success(val socialMedia: SocialMedia) : ContactScreenUiState
+  data class Error(val message: String) : ContactScreenUiState
 }
 
 fun String.formatLink(): String {
-    return if (!this.startsWith("http://") && !this.startsWith("https://")) {
-        "https://$this"
-    } else {
-        this
-    }
+  return if (!this.startsWith("http://") && !this.startsWith("https://")) {
+    "https://$this"
+  } else {
+    this
+  }
 }

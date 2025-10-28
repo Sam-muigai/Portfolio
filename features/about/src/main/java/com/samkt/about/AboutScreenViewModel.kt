@@ -11,37 +11,35 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
 class AboutScreenViewModel(
-    private val getAboutUseCase: GetAboutUseCase
+  private val getAboutUseCase: GetAboutUseCase,
 ) : ViewModel() {
 
-    private val _aboutScreenUiState =
-        MutableStateFlow<AboutScreenUiState>(AboutScreenUiState.Loading)
-    val aboutScreenUiState = _aboutScreenUiState.asStateFlow()
+  private val _aboutScreenUiState =
+    MutableStateFlow<AboutScreenUiState>(AboutScreenUiState.Loading)
+  val aboutScreenUiState = _aboutScreenUiState.asStateFlow()
 
-    init {
-        getAbout()
-    }
+  init {
+    getAbout()
+  }
 
-    private fun getAbout() {
-        viewModelScope.launch {
-            when (val response = getAboutUseCase.invoke(USER_ID)) {
-                is Result.Error -> {
-                    _aboutScreenUiState.update { AboutScreenUiState.Error(response.message) }
-                }
-
-                is Result.Success -> {
-                    _aboutScreenUiState.update { AboutScreenUiState.Success(response.data) }
-                }
-            }
+  private fun getAbout() {
+    viewModelScope.launch {
+      when (val response = getAboutUseCase.invoke(USER_ID)) {
+        is Result.Error -> {
+          _aboutScreenUiState.update { AboutScreenUiState.Error(response.message) }
         }
+
+        is Result.Success -> {
+          _aboutScreenUiState.update { AboutScreenUiState.Success(response.data) }
+        }
+      }
     }
+  }
 }
 
-
 sealed interface AboutScreenUiState {
-    data class Success(val aboutMe: AboutMe) : AboutScreenUiState
-    data class Error(val message: String) : AboutScreenUiState
-    data object Loading : AboutScreenUiState
+  data class Success(val aboutMe: AboutMe) : AboutScreenUiState
+  data class Error(val message: String) : AboutScreenUiState
+  data object Loading : AboutScreenUiState
 }

@@ -44,261 +44,260 @@ import coil.compose.AsyncImage
 import com.samkt.domain.models.Experience
 import com.samkt.domain.models.UserInformation
 import org.koin.compose.viewmodel.koinViewModel
-import kotlin.math.exp
 
 @Composable
 fun AboutScreen(
-    aboutScreenViewModel: AboutScreenViewModel = koinViewModel(),
-    onBackClick: () -> Unit
+  aboutScreenViewModel: AboutScreenViewModel = koinViewModel(),
+  onBackClick: () -> Unit,
 ) {
-    val aboutScreenUiState =
-        aboutScreenViewModel.aboutScreenUiState.collectAsStateWithLifecycle().value
-    AboutScreenContent(
-        aboutScreenUiState = aboutScreenUiState,
-        onBackClick = onBackClick
-    )
+  val aboutScreenUiState =
+    aboutScreenViewModel.aboutScreenUiState.collectAsStateWithLifecycle().value
+  AboutScreenContent(
+    aboutScreenUiState = aboutScreenUiState,
+    onBackClick = onBackClick,
+  )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AboutScreenContent(
-    modifier: Modifier = Modifier,
-    aboutScreenUiState: AboutScreenUiState,
-    onBackClick: () -> Unit = {}
+  modifier: Modifier = Modifier,
+  aboutScreenUiState: AboutScreenUiState,
+  onBackClick: () -> Unit = {},
 ) {
-    Scaffold(
-        modifier = modifier
-            .fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background,
-        topBar = {
-            CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                ),
-                title = {
-                    Text(
-                        stringResource(R.string.about_me),
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = onBackClick,
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
-                            contentDescription = null
-                        )
-                    }
-                }
+  Scaffold(
+    modifier = modifier
+      .fillMaxSize(),
+    containerColor = MaterialTheme.colorScheme.background,
+    topBar = {
+      CenterAlignedTopAppBar(
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+          containerColor = MaterialTheme.colorScheme.background,
+        ),
+        title = {
+          Text(
+            stringResource(R.string.about_me),
+            style = MaterialTheme.typography.bodyLarge.copy(
+              fontWeight = FontWeight.Bold,
+            ),
+          )
+        },
+        navigationIcon = {
+          IconButton(
+            onClick = onBackClick,
+          ) {
+            Icon(
+              imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+              contentDescription = null,
             )
+          }
+        },
+      )
+    },
+  ) { paddingValues ->
+    AnimatedContent(
+      modifier = Modifier.padding(paddingValues),
+      targetState = aboutScreenUiState,
+    ) { aboutScreenUiState ->
+      when (aboutScreenUiState) {
+        is AboutScreenUiState.Error -> {
+          AboutScreenErrorScreen(
+            errorMessage = aboutScreenUiState.message,
+          )
         }
-    ) { paddingValues ->
-        AnimatedContent(
-            modifier = Modifier.padding(paddingValues),
-            targetState = aboutScreenUiState
-        ) { aboutScreenUiState ->
-            when (aboutScreenUiState) {
-                is AboutScreenUiState.Error -> {
-                    AboutScreenErrorScreen(
-                        errorMessage = aboutScreenUiState.message
-                    )
-                }
 
-                AboutScreenUiState.Loading -> {
-                    AboutScreenLoadingScreen()
-                }
-
-                is AboutScreenUiState.Success -> {
-                    AboutScreenContent(
-                        userInformation = aboutScreenUiState.aboutMe.user,
-                        experiences = aboutScreenUiState.aboutMe.experiences
-                    )
-                }
-            }
+        AboutScreenUiState.Loading -> {
+          AboutScreenLoadingScreen()
         }
+
+        is AboutScreenUiState.Success -> {
+          AboutScreenContent(
+            userInformation = aboutScreenUiState.aboutMe.user,
+            experiences = aboutScreenUiState.aboutMe.experiences,
+          )
+        }
+      }
     }
+  }
 }
 
 @Composable
 fun AboutScreenErrorScreen(
-    modifier: Modifier = Modifier,
-    errorMessage: String
+  modifier: Modifier = Modifier,
+  errorMessage: String,
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            errorMessage,
-            fontWeight = FontWeight.Bold
-        )
-    }
+  Box(
+    modifier = modifier
+      .fillMaxSize(),
+    contentAlignment = Alignment.Center,
+  ) {
+    Text(
+      errorMessage,
+      fontWeight = FontWeight.Bold,
+    )
+  }
 }
 
 @Composable
 fun AboutScreenLoadingScreen(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator(
-            strokeWidth = 1.5.dp
-        )
-    }
+  Box(
+    modifier = modifier
+      .fillMaxSize(),
+    contentAlignment = Alignment.Center,
+  ) {
+    CircularProgressIndicator(
+      strokeWidth = 1.5.dp,
+    )
+  }
 }
 
 @Composable
 fun AboutScreenContent(
-    modifier: Modifier = Modifier,
-    userInformation: UserInformation? = null,
-    experiences: List<Experience>? = null
+  modifier: Modifier = Modifier,
+  userInformation: UserInformation? = null,
+  experiences: List<Experience>? = null,
 ) {
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        item {
-            AnimatedVisibility(userInformation != null) {
-                Column(
-                    modifier = modifier
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    AsyncImage(
-                        modifier = Modifier
-                            .size(96.dp)
-                            .border(1.5.dp, MaterialTheme.colorScheme.onBackground, CircleShape)
-                            .clip(
-                                CircleShape
-                            ),
-                        model = userInformation!!.profileImage,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop
-                    )
-                    Text(
-                        userInformation.name,
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
-                    Text(
-                        userInformation.role,
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.Light
-                        )
-                    )
-                    Text(
-                        userInformation.country,
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.Light
-                        )
-                    )
-                }
-            }
+  LazyColumn(
+    modifier = modifier
+      .fillMaxSize()
+      .padding(horizontal = 16.dp),
+    verticalArrangement = Arrangement.spacedBy(8.dp),
+  ) {
+    item {
+      AnimatedVisibility(userInformation != null) {
+        Column(
+          modifier = modifier
+            .fillMaxWidth(),
+          horizontalAlignment = Alignment.CenterHorizontally,
+          verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+          AsyncImage(
+            modifier = Modifier
+              .size(96.dp)
+              .border(1.5.dp, MaterialTheme.colorScheme.onBackground, CircleShape)
+              .clip(
+                CircleShape,
+              ),
+            model = userInformation!!.profileImage,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+          )
+          Text(
+            userInformation.name,
+            style = MaterialTheme.typography.titleLarge.copy(
+              fontWeight = FontWeight.Bold,
+            ),
+          )
+          Text(
+            userInformation.role,
+            style = MaterialTheme.typography.bodyLarge.copy(
+              fontWeight = FontWeight.Light,
+            ),
+          )
+          Text(
+            userInformation.country,
+            style = MaterialTheme.typography.bodyLarge.copy(
+              fontWeight = FontWeight.Light,
+            ),
+          )
         }
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        item {
-            AnimatedVisibility(
-                userInformation != null
-            ) {
-                Column {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Text(
-                            stringResource(R.string.about_me),
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        userInformation!!.about,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            }
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        when {
-            experiences == null -> {}
-            experiences.isEmpty() -> {
-                item {
-                    Text(stringResource(R.string.no_experience))
-                }
-            }
-
-            else -> {
-                item {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Text(
-                            stringResource(R.string.experience),
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-                items(experiences) {
-                    ExperienceCard(experience = it)
-                }
-            }
-        }
+      }
     }
+    item {
+      Spacer(modifier = Modifier.height(16.dp))
+    }
+
+    item {
+      AnimatedVisibility(
+        userInformation != null,
+      ) {
+        Column {
+          Row(
+            modifier = Modifier.fillMaxWidth(),
+          ) {
+            Text(
+              stringResource(R.string.about_me),
+              fontWeight = FontWeight.Bold,
+            )
+          }
+          Spacer(modifier = Modifier.height(4.dp))
+          Text(
+            userInformation!!.about,
+            style = MaterialTheme.typography.bodyMedium,
+          )
+        }
+      }
+    }
+
+    item {
+      Spacer(modifier = Modifier.height(16.dp))
+    }
+
+    when {
+      experiences == null -> {}
+      experiences.isEmpty() -> {
+        item {
+          Text(stringResource(R.string.no_experience))
+        }
+      }
+
+      else -> {
+        item {
+          Row(
+            modifier = Modifier.fillMaxWidth(),
+          ) {
+            Text(
+              stringResource(R.string.experience),
+              fontWeight = FontWeight.Bold,
+            )
+          }
+        }
+        items(experiences) {
+          ExperienceCard(experience = it)
+        }
+      }
+    }
+  }
 }
 
 @Composable
 fun ExperienceCard(
-    modifier: Modifier = Modifier,
-    experience: Experience
+  modifier: Modifier = Modifier,
+  experience: Experience,
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
+  Row(
+    modifier = modifier
+      .fillMaxWidth()
+      .padding(bottom = 8.dp),
+    verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Surface(
+      modifier = Modifier,
+      color = MaterialTheme.colorScheme.surfaceVariant,
+      shape = MaterialTheme.shapes.small,
     ) {
-        Surface(
-            modifier = Modifier,
-            color = MaterialTheme.colorScheme.surfaceVariant,
-            shape = MaterialTheme.shapes.small
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .padding(8.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_outline_work),
-                    contentDescription = experience.description
-                )
-            }
-        }
-        Spacer(Modifier.width(8.dp))
-        Column {
-            Text(
-                text = "${experience.title} at ${experience.companyName}",
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Text(
-                text = "${experience.fromDate} - ${experience.toDate}",
-                style = MaterialTheme.typography.labelSmall
-            )
-        }
+      Box(
+        modifier = Modifier
+          .size(48.dp)
+          .padding(8.dp),
+        contentAlignment = Alignment.Center,
+      ) {
+        Icon(
+          painter = painterResource(R.drawable.ic_outline_work),
+          contentDescription = experience.description,
+        )
+      }
     }
+    Spacer(Modifier.width(8.dp))
+    Column {
+      Text(
+        text = "${experience.title} at ${experience.companyName}",
+        style = MaterialTheme.typography.bodyMedium,
+      )
+      Text(
+        text = "${experience.fromDate} - ${experience.toDate}",
+        style = MaterialTheme.typography.labelSmall,
+      )
+    }
+  }
 }

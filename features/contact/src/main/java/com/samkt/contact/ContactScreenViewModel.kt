@@ -6,16 +6,21 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.samkt.domain.helpers.Result
+import com.samkt.domain.models.Contact
 import com.samkt.domain.models.SocialMedia
+import com.samkt.domain.repositories.MessageRepository
 import com.samkt.domain.repositories.UserRepository
 import com.samkt.domain.utils.Constants.USER_ID
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ContactScreenViewModel(
   private val userRepository: UserRepository,
+  private val messageRepository: MessageRepository,
 ) : ViewModel() {
 
   private val _contactScreenUiState =
@@ -31,6 +36,12 @@ class ContactScreenViewModel(
   var message by mutableStateOf("")
     private set
 
+  var isSendingMessage by mutableStateOf(false)
+    private set
+
+  private val _responseMessage = Channel<String>()
+  val responseMessage = _responseMessage.receiveAsFlow()
+
   fun onEmailChange(email: String) {
     this.email = email
   }
@@ -41,6 +52,27 @@ class ContactScreenViewModel(
 
   fun onMessageChange(message: String) {
     this.message = message
+  }
+
+  fun onSendMessage() {
+    isSendingMessage = true
+    viewModelScope.launch {
+      val contact = Contact(
+        name = name,
+        email = email,
+        message = message,
+      )
+      when (val result = messageRepository.sendMessage(contact)) {
+        is Result.Error -> {
+          isSendingMessage = false
+          _responseMessage.send(result.message)
+        }
+        is Result.Success -> {
+          isSendingMessage = false
+          _responseMessage.send(result.data)
+        }
+      }
+    }
   }
 
   init {

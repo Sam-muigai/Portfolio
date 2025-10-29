@@ -1,9 +1,11 @@
 package com.samkt.data.mappers
 
+import com.samkt.domain.models.Contact
 import com.samkt.domain.models.Experience
 import com.samkt.domain.models.Project
 import com.samkt.domain.models.SocialMedia
 import com.samkt.domain.models.UserInformation
+import com.samkt.network.dtos.ContactRequest
 import com.samkt.network.dtos.ExperienceResponse
 import com.samkt.network.dtos.ProjectResponse
 import com.samkt.network.dtos.SocialMediaResponse
@@ -48,5 +50,13 @@ fun SocialMediaResponse.toDomain(): SocialMedia {
     xUrl = xUrl,
     youtubeUrl = youtubeUrl,
     portfolioUrl = portfolioUrl,
+  )
+}
+
+fun Contact.toData(): ContactRequest {
+  return ContactRequest(
+    email = email,
+    message = message,
+    name = name,
   )
 }

@@ -1,5 +1,6 @@
 package com.samkt.contact
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -30,14 +32,17 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.samkt.domain.models.SocialMedia
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -49,6 +54,14 @@ fun ContactScreen(
     contactScreenViewModel.contactScreenUiState.collectAsStateWithLifecycle().value
 
   val uriHandler = LocalUriHandler.current
+  val context = LocalContext.current
+
+  LaunchedEffect(contactScreenViewModel.responseMessage) {
+    contactScreenViewModel.responseMessage.collectLatest { message ->
+      Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+  }
+
   ContactScreenContent(
     onBackClicked = onBackClicked,
     contactScreenUiState = contactScreenUiState,
@@ -61,6 +74,8 @@ fun ContactScreen(
     onNameChange = contactScreenViewModel::onNameChange,
     message = contactScreenViewModel.message,
     onMessageChange = contactScreenViewModel::onMessageChange,
+    onSendMessageClicked = contactScreenViewModel::onSendMessage,
+    isSendingMessage = contactScreenViewModel.isSendingMessage,
   )
 }
 
@@ -77,6 +92,8 @@ fun ContactScreenContent(
   onNameChange: (String) -> Unit = {},
   message: String,
   onMessageChange: (String) -> Unit = {},
+  onSendMessageClicked: () -> Unit = {},
+  isSendingMessage: Boolean = false,
 ) {
   Scaffold(
     modifier = modifier
@@ -158,12 +175,32 @@ fun ContactScreenContent(
         },
       )
       Spacer(Modifier.height(16.dp))
-      Button(
-        onClick = { /* Handle form submission */ },
+      Row(
         modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.small,
+        horizontalArrangement = Arrangement.Center,
       ) {
-        Text(stringResource(R.string.send_message), fontWeight = FontWeight.Bold)
+        AnimatedContent(
+
+          targetState = isSendingMessage,
+        ) { isLoading ->
+          if (isLoading) {
+            CircularProgressIndicator(
+              strokeWidth = 1.2.dp,
+              modifier = Modifier.size(40.dp),
+            )
+          } else {
+            Button(
+              onClick = onSendMessageClicked,
+              modifier = Modifier.fillMaxWidth(),
+              shape = MaterialTheme.shapes.small,
+            ) {
+              Text(
+                stringResource(R.string.send_message),
+                fontWeight = FontWeight.Bold,
+              )
+            }
+          }
+        }
       }
       Spacer(Modifier.height(16.dp))
       SocialMediaAccountContent(

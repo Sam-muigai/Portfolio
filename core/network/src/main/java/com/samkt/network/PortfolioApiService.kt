@@ -1,5 +1,7 @@
 package com.samkt.network
 
+import com.samkt.network.dtos.ContactRequest
+import com.samkt.network.dtos.ContactResponse
 import com.samkt.network.dtos.ExperienceResponse
 import com.samkt.network.dtos.ProjectResponse
 import com.samkt.network.dtos.SocialMediaResponse
@@ -15,4 +17,6 @@ interface PortfolioApiService {
   suspend fun getExperiences(userId: Int): ApiResponse<List<ExperienceResponse>>
 
   suspend fun getSocialMediaInformation(userId: Int): ApiResponse<SocialMediaResponse>
+
+  suspend fun sendMessage(contactRequest: ContactRequest): ApiResponse<ContactResponse>
 }

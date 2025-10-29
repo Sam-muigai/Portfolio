@@ -9,15 +9,15 @@ A modern Android portfolio application built with Jetpack Compose and clean arch
     <th>About Me Screen</th>
   </tr>
   <tr>
-    <td><img src="screenshots/home.png" width="250" alt="Home Screen"></td>
-    <td><img src="screenshots/projects.png" width="250" alt="Projects Screen"></td>
-    <td><img src="screenshots/about.png" width="250" alt="About Screen"></td>
+    <td><img src="screenshots/home.jpg" width="250" alt="Home Screen"></td>
+    <td><img src="screenshots/projects.jpg" width="250" alt="Projects Screen"></td>
+    <td><img src="screenshots/about.jpg" width="250" alt="About Screen"></td>
   </tr>
   <tr>
     <th>Contact Screen</th>
   </tr>
   <tr>
-    <td><img src="screenshots/contact.png" width="250" alt="Contact Screen"></td>
+    <td><img src="screenshots/contact.jpg" width="250" alt="Contact Screen"></td>
   </tr>
 </table>
 

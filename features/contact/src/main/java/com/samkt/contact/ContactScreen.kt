@@ -180,7 +180,6 @@ fun ContactScreenContent(
         horizontalArrangement = Arrangement.Center,
       ) {
         AnimatedContent(
-
           targetState = isSendingMessage,
         ) { isLoading ->
           if (isLoading) {

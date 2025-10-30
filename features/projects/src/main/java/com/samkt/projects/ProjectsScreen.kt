@@ -32,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -216,10 +217,11 @@ fun ProjectCard(
         }
         Spacer(Modifier.width(8.dp))
         AsyncImage(
-          modifier = Modifier.size(64.dp)
+          modifier = Modifier.size(56.dp)
             .clip(MaterialTheme.shapes.small),
           model = project.imageUrl,
           contentDescription = project.title,
+          contentScale = ContentScale.Crop,
         )
       }
       Spacer(Modifier.height(8.dp))

@@ -184,7 +184,7 @@ fun HomeScreenContent(
   ) {
     AsyncImage(
       modifier = Modifier
-        .size(96.dp)
+        .size(88.dp)
         .border(1.5.dp, MaterialTheme.colorScheme.onBackground, CircleShape)
         .clip(
           CircleShape,
